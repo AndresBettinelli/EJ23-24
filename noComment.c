@@ -9,74 +9,83 @@ las constantes de carácter. Los comentarios de C no se anidan.
 // en ningún lado dice que va leer archivos, no sé de donde lee el texto, corríjanlo.
 
 int main(){
-	
     FILE * acom;
     acom = fopen("prueba.txt","r");
-    
     FILE * afin;
 	afin = fopen("Sin Comentarios.txt", "wt");
-	
 	char c; // use fscanf y fprintf
 	
 	fscanf(acom,"%c",&c);
 	while(!feof(acom)){
-		if(c == '"'){ // encuentra el comienzo de un string
+		if(c == '"'){ 
 			fprintf(afin,"%c", c);
-			fscanf(acom,"%c",&c);
-			while(c != '"'){
-				fprintf(afin,"%c", c);
-				fscanf(acom,"%c",&c);
-				if(c == '\\'){
-					fprintf(afin,"%c", c);
-					fscanf(acom,"%c",&c);
-					fprintf(afin,"%c", c);
-					fscanf(acom,"%c",&c);
-				}
-			}
-			fprintf(afin,"%c", c);
+			analizarComillas(acom, afin);
 		}
-		
 		else if(c == '\''){
 			fprintf(afin,"%c", c);
-			fscanf(acom,"%c",&c);
-			while(c != '\''){
-				fprintf(afin,"%c", c);
-				fscanf(acom,"%c",&c);
-				if(c == '\\'){
-					fprintf(afin,"%c", c);
-					fscanf(acom,"%c",&c);
-					fprintf(afin,"%c", c);
-					fscanf(acom,"%c",&c);
-				}
-			}
-			fprintf(afin,"%c", c);
+			analizarApostrofes(acom, afin);
 		}
-		
-		else if(c == '/'){ // encuentra un / 
-			fscanf(acom,"%c",&c);
-			if(c == '/'){ // encuentra otro / delante del anterior /
-				while(c != '\n' && !feof(acom)){
-				fscanf(acom,"%c",&c);
-				}
-				fprintf(afin,"%c", c);
-			} else if(c == '*'){
-				fscanf(acom,"%c",&c);
-				while(c != '*'){
-					fscanf(acom,"%c",&c);
-					if(c == '*'){
-						fscanf(acom,"%c",&c);
-						if(c == '/'){
-							break; // no me gusta usar esto
-						}
-					}
-				}
-			}
-			else{
-				fprintf(afin,"/%c", c);
-			}
+		else if(c == '/'){
+			analizarComentarios(acom, afin);
 		}
-		
-		else{fprintf(afin,"%c", c);} // sino encontro ", ' o /
+		else{fprintf(afin,"%c", c);}
 		fscanf(acom,"%c",&c);
+	}
+}
+
+void analizarComillas(FILE *origen, FILE *destino){
+	char c;
+	fscanf(origen,"%c",&c);
+	while(c != '"'){
+		fprintf(destino,"%c", c);
+		fscanf(origen,"%c",&c);
+		if(c == '\\'){
+			fprintf(destino,"%c", c);
+			fscanf(origen,"%c",&c);
+			fprintf(destino,"%c", c);
+			fscanf(origen,"%c",&c);
+		}
+	}
+	fprintf(destino,"%c", c);
+}
+
+void analizarApostrofes(FILE *origen, FILE *destino){
+	char c;
+	fscanf(origen,"%c",&c);
+	while(c != '\''){
+		fprintf(destino,"%c", c);
+		fscanf(origen,"%c",&c);
+		if(c == '\\'){
+			fprintf(destino,"%c", c);
+			fscanf(origen,"%c",&c);
+			fprintf(destino,"%c", c);
+			fscanf(origen,"%c",&c);
+		}
+	}
+	fprintf(destino,"%c", c);
+}
+
+void analizarComentarios(FILE *origen, FILE *destino){
+	char c;
+	fscanf(origen,"%c",&c);
+	if(c == '/'){
+		while(c != '\n' && !feof(origen)){
+		fscanf(origen,"%c",&c);
+		}
+		fprintf(destino,"%c", c);
+	} else if(c == '*'){
+		fscanf(origen,"%c",&c);
+		while(c != '*'){
+			fscanf(origen,"%c",&c);
+			if(c == '*'){
+				fscanf(origen,"%c",&c);
+				if(c == '/'){
+					return;
+				}
+			}
+		}
+	}
+	else{
+		fprintf(destino,"/%c", c);
 	}
 }
