@@ -1,0 +1,78 @@
+```c++
+#include <stdio.h>
+
+// se asume que el programa a borrar los comentarios no tiene errores sintacticos
+
+int main(){
+	
+    FILE * acom;
+    acom = fopen("prueba.txt","r");
+    
+    FILE * afin;
+	afin = fopen("Sin Comentarios.txt", "wt");
+	
+	char c; // use fscanf y fprintf
+	
+	fscanf(acom,"%c",&c);
+	while(!feof(acom)){
+		if(c == '"'){ // encuentra el comienzo de un string
+			fprintf(afin,"%c", c);
+			fscanf(acom,"%c",&c);
+			while(c != '"'){
+				fprintf(afin,"%c", c);
+				fscanf(acom,"%c",&c);
+				if(c == '\\'){
+					fprintf(afin,"%c", c);
+					fscanf(acom,"%c",&c);
+					fprintf(afin,"%c", c);
+					fscanf(acom,"%c",&c);
+				}
+			}
+			fprintf(afin,"%c", c);
+		}
+		
+		else if(c == '\''){
+			fprintf(afin,"%c", c);
+			fscanf(acom,"%c",&c);
+			while(c != '\''){
+				fprintf(afin,"%c", c);
+				fscanf(acom,"%c",&c);
+				if(c == '\\'){
+					fprintf(afin,"%c", c);
+					fscanf(acom,"%c",&c);
+					fprintf(afin,"%c", c);
+					fscanf(acom,"%c",&c);
+				}
+			}
+			fprintf(afin,"%c", c);
+		}
+		
+		else if(c == '/'){ // encuentra un / 
+			fscanf(acom,"%c",&c);
+			if(c == '/'){ // encuentra otro / delante del anterior /
+				while(c != '\n' && !feof(acom)){
+				fscanf(acom,"%c",&c);
+				}
+				fprintf(afin,"%c", c);
+			} else if(c == '*'){
+				fscanf(acom,"%c",&c);
+				while(c != '*'){
+					fscanf(acom,"%c",&c);
+					if(c == '*'){
+						fscanf(acom,"%c",&c);
+						if(c == '/'){
+							break; // no me gusta usar esto
+						}
+					}
+				}
+			}
+			else{
+				fprintf(afin,"/%c", c);
+			}
+		}
+		
+		else{fprintf(afin,"%c", c);} // sino encontro ", ' o /
+		fscanf(acom,"%c",&c);
+	}
+}
+```
