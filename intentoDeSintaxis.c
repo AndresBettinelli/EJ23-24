@@ -55,40 +55,35 @@ int main(){
 		switch(c){
 			case ')':
 				printf("No se han abierto correctamente los parentesis");
-				abort();
+				abort(); // no me gusta usar esto
 			case ']':
 				printf("No se han abierto correctamente los corchetes");
 				abort();
 			case '}':
 				printf("No se han abierto correctamente las llaves");
 				abort();
-		}
-		
-		// encuentra unas comillas
-		if(c == '"'){
-			analizarComillas(acom);
-		}
-		
-		// encuentra un apóstrofe
-		else if(c == '\''){
-			analizarApostrofes(acom);
-		}
-		
-		// encuentra comentarios
-		else if(c == '/'){ // encuentra un / 
-			analizarComentarios(acom);
-		}
-		
-		else if(c == '('){
-			analizarParentesis(acom);
-		}
+			case '(':
+				analizarParentesis(origen);
+				break;
+			case '[':
+				analizarCorchetes(origen);
+				break;
+			case '{':
+				analizarLlaves(origen);
+				break;
+			case '"':
+				analizarComillas(origen);
+				break;
+			case '\'':
+				analizarApostrofes(origen);
+				break;
+			case '/':
+				analizarComentarios(origen);
+				break;
 		fscanf(acom,"%c",&c);
 	}
 	printf("Sin errores rudimentarios de sintaxis");
 }
-
-
-
 
 void analizarParentesis(FILE *origen){
 	char letra;
@@ -103,11 +98,9 @@ void analizarParentesis(FILE *origen){
 			case '(':
 				analizarParentesis(origen);
 				break;
-			
 			case '[':
 				analizarCorchetes(origen);
 				break;
-			
 			case '{':
 				analizarLlaves(origen);
 				break;
@@ -145,11 +138,9 @@ void analizarCorchetes(FILE *origen){
 			case '(':
 				analizarParentesis(origen);
 				break;
-			
 			case '[':
 				analizarCorchetes(origen);
 				break;
-			
 			case '{':
 				analizarLlaves(origen);
 				break;
@@ -171,6 +162,7 @@ void analizarCorchetes(FILE *origen){
 		}
 	}
 }
+
 void analizarLlaves(FILE *origen){
 	char letra;
 	fscanf(origen,"%c",&letra); // lee el sig del (
@@ -184,11 +176,9 @@ void analizarLlaves(FILE *origen){
 			case '(':
 				analizarParentesis(origen);
 				break;
-			
 			case '[':
 				analizarCorchetes(origen);
 				break;
-			
 			case '{':
 				analizarLlaves(origen);
 				break;
@@ -210,8 +200,6 @@ void analizarLlaves(FILE *origen){
 		}
 	}
 }
-
-
 
 void analizarComillas(FILE *origen){
 	char c;
@@ -238,7 +226,6 @@ void analizarComillas(FILE *origen){
 		}
 	}
 }
-
 
 void analizarApostrofes(FILE *origen){
 	char c;
