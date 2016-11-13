@@ -47,7 +47,6 @@ void analizarLlaves(FILE *origen);
 int main(){
  	FILE * acom;
     acom = fopen("prueba.txt","r");
-	
 	char c;
 	
 	fscanf(acom,"%c",&c);
