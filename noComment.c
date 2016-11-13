@@ -1,7 +1,12 @@
-###```c
 #include <stdio.h>
 
-// se asume que el programa a borrar los comentarios no tiene errores sintacticos
+// se asume que el programa a borrar los comentarios no tiene errores sintácticos
+/*
+Ejercicio 1-23. Escriba un programa para eliminar todos los comentarios de un
+programa en C. No olvide manejar apropiadamente las cadenas entre comillas y
+las constantes de carácter. Los comentarios de C no se anidan.
+*/
+// en ningún lado dice que va leer archivos, no sé de donde lee el texto, corríjanlo.
 
 int main(){
 	
@@ -75,4 +80,3 @@ int main(){
 		fscanf(acom,"%c",&c);
 	}
 }
-```
