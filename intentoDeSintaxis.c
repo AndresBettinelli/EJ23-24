@@ -63,23 +63,24 @@ int main(){
 				printf("No se han abierto correctamente las llaves");
 				abort();
 			case '(':
-				analizarParentesis(origen);
+				analizarParentesis(acom);
 				break;
 			case '[':
-				analizarCorchetes(origen);
+				analizarCorchetes(acom);
 				break;
 			case '{':
-				analizarLlaves(origen);
+				analizarLlaves(acom);
 				break;
 			case '"':
-				analizarComillas(origen);
+				analizarComillas(acom);
 				break;
 			case '\'':
-				analizarApostrofes(origen);
+				analizarApostrofes(acom);
 				break;
 			case '/':
-				analizarComentarios(origen);
+				analizarComentarios(acom);
 				break;
+			}
 		fscanf(acom,"%c",&c);
 	}
 	printf("Sin errores rudimentarios de sintaxis");
