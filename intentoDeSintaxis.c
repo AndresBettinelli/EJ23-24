@@ -34,7 +34,7 @@ if(
 No sé que opinan.
 
 ...
-Es bastante obvio lo que dije, pero se me pudo haber escapado algo. Si ven algo, avisen.
+Se me pudo haber escapado algo. Si ven algo, avisen.
 */
 
 void analizarComillas(FILE *origen);
@@ -80,7 +80,7 @@ int main(){
 			case '/':
 				analizarComentarios(acom);
 				break;
-			}
+		}
 		fscanf(acom,"%c",&c);
 	}
 	printf("Sin errores rudimentarios de sintaxis");
