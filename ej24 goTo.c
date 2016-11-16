@@ -3,10 +3,9 @@
  2016
  */
 
-/*Nota respecto a getc y ungetc
- User getc en lugar de getchar() porque ungetch no existe en C.
- usar getc y ungetc me permiten trabajar sobre el flujo stdin,
- que creo que es lo que se busca.*/
+/*getchar() funciona como getc sobre el flujo stdin
+  ungetc(stdin) es necesario porque ungetch no esta definido
+ */
 
 #include <stdio.h>
 
@@ -21,43 +20,44 @@ int main(int argc, const char * argv[]) {
     
     char c;
     
-    switch(c = getc(stdin)){
+CODIGO:
+    switch(c = getchar()){
         case '"':
             goto LITERAL_CADENA;
+        case '\'':
+            goto LITERAL_CARACTER;
         case EOF:
             goto END;
-            break;
-        default:
-            ungetc(c, stdin);
-            goto CODIGO;
-            break;
-    }
-    
-CODIGO:
-    switch(getchar()){
         case '{':
             push('}');
+            goto CODIGO;
         case '}':
             if(pop() == '}')
                 goto CODIGO;
             else
-                //error
-                case '(':
-                push(')');
+                goto ERROR;
+        case '(':
+            push(')');
+            goto CODIGO;
         case ')':
             if(pop() == ')')
                 goto CODIGO;
             else
-                //error
-                case '[':
-                push(']');
+                goto ERROR;
+        case '[':
+            push(']');
+            goto CODIGO;
         case ']':
             if(pop() == ']')
                 goto CODIGO;
             else
-                //error
-                default:
-                goto CODIGO;
+                goto ERROR;
+        // i es para test, para popear la pila
+        case 'i':
+            printf("%c", pop());
+            goto CODIGO;
+        default:
+            goto CODIGO;
     }
     
 LITERAL_CADENA:
@@ -72,20 +72,44 @@ LITERAL_CADENA:
             goto CODIGO;
             break;
         case '\n':
-            //ERROR
+            goto ERROR;
             break;
         default:
             goto LITERAL_CADENA;
             break;
     }
+LITERAL_CARACTER:
+    switch(getchar())
+    {
+        case '\\':
+            //Omito el caracter escapado
+            getchar();
+            goto LITERAL_CARACTER;
+            break;
+        case '\'':
+            goto CODIGO;
+            break;
+        case '\n':
+            goto ERROR;
+            break;
+        default:
+            goto LITERAL_CARACTER;
+            break;
+    }
     
 END:
-    if(pop(pila)!='$')
-        //error
+    if(pop()!='$')
+        goto ERROR;
     else
-        //CORRECTO
+        printf("La ejecución fue exitosa");
+    return 0;
+    
+ERROR:
+    printf("El lenguaje no es reconocido por el autómata");
     return 0;
 }
+
+/*Tratamiento de la pila como un array de tamaño fijo*/
 
 int sp = 0; //Stack pointer
 char pila[PILA_MAX_SIZE];
@@ -103,7 +127,7 @@ char pop(){
         return pila[--sp];
     }
     else{
-        printf("Error: pila vacía, no se puede realizar un pop");
+        printf("Error: pila vacía, no se puede realizar un pop \n");
         return 'e';
     }
 }
