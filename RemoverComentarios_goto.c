@@ -24,7 +24,7 @@ CODIGO:
 			} break;
         
 		case EOF:
-     goto END;			
+     		goto END;			
 		
 		case '\'':
 			putchar(c);
@@ -35,9 +35,9 @@ CODIGO:
 			goto LITERAL_CEDENA;
 	
 		default:
-            putchar(c);
-			goto CODIGO;					
-			}  
+            	putchar(c);
+		goto CODIGO;					
+	}  
 			
 COMENTARIO_BLOQUE:
 
@@ -49,7 +49,7 @@ COMENTARIO_BLOQUE:
 				goto CODIGO;
 				} break;
 		default:
-            goto COMENTARIO_BLOQUE;	 
+            	goto COMENTARIO_BLOQUE;	 
 			
 	}		
 
@@ -62,7 +62,7 @@ COMENTARIO_LINEA:
 			break;
 		
 		default:
-            goto COMENTARIO_LINEA;	 
+            	goto COMENTARIO_LINEA;	 
 	}
 			
 END:
@@ -74,7 +74,7 @@ ERROR:
 	return 0;
 	    
 LITERAL_CEDENA:
-//	putchar(c);
+
     switch(c=getchar())
     {
         case '\\':
@@ -92,7 +92,7 @@ LITERAL_CEDENA:
  
         default:
             putchar(c);
-			goto LITERAL_CEDENA;
+	    goto LITERAL_CEDENA;
             break;
     }
 LITERAL_CARACTER:
@@ -113,7 +113,7 @@ LITERAL_CARACTER:
             break;
         default:
             putchar(c);
-			goto LITERAL_CARACTER;
+	    goto LITERAL_CARACTER;
             break;
     }   		
 }
