@@ -3,10 +3,6 @@
  2016
  */
 
-/*getchar() funciona como getc sobre el flujo stdin
-  ungetc(stdin) es necesario porque ungetch no esta definido
- */
-
 #include <stdio.h>
 
 #define PILA_MAX_SIZE 1000000
@@ -14,7 +10,7 @@
 void push(char caracter);
 char pop();
 
-int main(int argc, const char * argv[]) {
+int main(void) {
     
     push('$'); //Inicializo la pila
     
@@ -52,16 +48,12 @@ CODIGO:
                 goto CODIGO;
             else
                 goto ERROR;
-        // i es para test, para popear la pila
-        case 'i':
-            printf("%c", pop());
-            goto CODIGO;
         default:
             goto CODIGO;
     }
     
 LITERAL_CADENA:
-    switch(getchar())
+    switch(c = getchar())
     {
         case '\\':
             //Omito el caracter escapado
@@ -74,12 +66,15 @@ LITERAL_CADENA:
         case '\n':
             goto ERROR;
             break;
+        case EOF:
+            goto ERROR;
+            break;
         default:
             goto LITERAL_CADENA;
             break;
     }
 LITERAL_CARACTER:
-    switch(getchar())
+    switch(c = getchar())
     {
         case '\\':
             //Omito el caracter escapado
@@ -90,6 +85,9 @@ LITERAL_CARACTER:
             goto CODIGO;
             break;
         case '\n':
+            goto ERROR;
+            break;
+        case EOF:
             goto ERROR;
             break;
         default:
