@@ -84,7 +84,7 @@ LITERAL_CEDENA:
             break;
         case '"':
             putchar(c);
-			goto CODIGO;
+	    goto CODIGO;
             break;
         case '\n':
             goto ERROR;
@@ -96,7 +96,7 @@ LITERAL_CEDENA:
             break;
     }
 LITERAL_CARACTER:
-//    putchar(c);
+
 	switch(c=getchar())
     {
         case '\\':
@@ -106,7 +106,7 @@ LITERAL_CARACTER:
             break;
         case '\'':
             putchar(c);
-			goto CODIGO;
+	    goto CODIGO;
             break;
         case '\n':
             goto ERROR;
