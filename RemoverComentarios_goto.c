@@ -10,7 +10,6 @@
 main(){
 	
 	int c;
-	int d; 
 
 CODIGO:	
 	c=getchar();
