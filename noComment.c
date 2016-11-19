@@ -28,7 +28,9 @@ int main (void) {
 		else {
 			putchar(c);
 		}
-		c = getchar();
+		if (c != EOF) {
+			c = getchar();
+		}
 	}
 }
 
@@ -73,7 +75,7 @@ void analizarComentarios() {
 		}
 	} else if (c == '*'){
 		c = getchar();
-		while(c != '*'){
+		while(c != '*' && c != EOF){
 			c = getchar();
 			if(c == '*'){
 				c = getchar();
